@@ -28,7 +28,8 @@ public class JacksonObjectMapperApplication implements CommandLineRunner{
 		mapperUtility.writeValueAsString(car);
 		
 		String json = "{\"name\":\"Verna\", \"brand\":\"Hyundai\", \"type\":\"Sedan\"}";
-		mapperUtility.readValue(json);
+		Car car2 = mapperUtility.readValue(json, Car.class);
+		log.info("Java Object is {}", car2);
 		
 		mapperUtility.readAsNode(json);
 		log.info("---- Mapping is done successfully ----");
