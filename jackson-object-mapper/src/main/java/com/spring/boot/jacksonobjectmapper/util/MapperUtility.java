@@ -11,8 +11,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.spring.boot.jacksonobjectmapper.pojo.Car;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,27 +31,27 @@ public class MapperUtility<T> {
 		}
 	}
 	
-	public void writeValueAsString(T t) {
+	public String writeValueAsString(T t) {
 		log.info("---- Object Mapper Triggered ----");
+		String stringObject = null;
 		try {
-			String stringObject = mapper.writeValueAsString(t);
+			stringObject = mapper.writeValueAsString(t);
 			log.info("Java Object as String is {}", stringObject);
 		} catch (JsonProcessingException e) {
 			log.error("Exception occurred while parsing");
-			e.printStackTrace();
+			throw new RuntimeException();
 		}
+		return stringObject;
 	}
 	
-	public void readValue(String src) {
-		Car car = null;
+	public T readValue(String src, Class<T> t) {
 		try {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			car = mapper.readValue(src, Car.class);
+			return mapper.readValue(src, t);
 		} catch (JsonProcessingException e) {
 			log.error("Exception occurred while parsing");
-			e.printStackTrace();
+			throw new RuntimeException();
 		}
-		log.info("String after deserialize is {}", car);
 	}
 	
 	public void readAsNode(String src) {
