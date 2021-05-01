@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class MapperUtility {
 	
+	private MapperUtility() {}
+	
 	private static final ObjectMapper mapper = new ObjectMapper()
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	
