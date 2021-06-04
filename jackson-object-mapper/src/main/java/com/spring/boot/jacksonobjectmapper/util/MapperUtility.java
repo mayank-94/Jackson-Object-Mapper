@@ -1,6 +1,7 @@
 package com.spring.boot.jacksonobjectmapper.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +16,7 @@ public final class MapperUtility {
 	private static final ObjectMapper mapper = new ObjectMapper()
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	
-	public static <T> String map(final T source) {
+	public static <T> String write(final T source) {
 		log.info("---- Object Mapper Triggered ----");
 		String stringObject = "";
 		try {
@@ -25,6 +26,17 @@ public final class MapperUtility {
 			log.error("Exception occurred while parsing");
 		}
 		return stringObject;
+	}
+	
+	public static <T> T readValue(final String src, final TypeReference<T> type) {
+		T data = null;
+		try {
+			data = mapper.readValue(src, type);
+		}catch(JsonProcessingException e) {
+			log.error("Exception occurred while deserializing typeReference");
+			throw new RuntimeException();
+		}
+		return data;
 	}
 	
 	public static <T> T readValue(final String src, final Class<T> t) {
